@@ -1,5 +1,6 @@
 """Flask web application for emotion detection."""
 
+import requests
 from flask import Flask, jsonify, render_template, request
 
 from EmotionDetection import emotion_detector
