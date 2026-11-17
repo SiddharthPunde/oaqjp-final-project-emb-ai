@@ -1,12 +1,27 @@
-let RunSentimentAnalysis = ()=>{
-    textToAnalyze = document.getElementById("textToAnalyze").value;
+function RunSentimentAnalysis() {
+    const textToAnalyze = document.getElementById("textToAnalyze").value.trim();
+    const output = document.getElementById("system_response");
 
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("system_response").innerHTML = xhttp.responseText;
-        }
-    };
-    xhttp.open("GET", "emotionDetector?textToAnalyze"+"="+textToAnalyze, true);
-    xhttp.send();
+    if (!textToAnalyze) {
+        output.textContent = "Please enter some text to analyze.";
+        return;
+    }
+
+    fetch("/emotionDetector?textToAnalyze=" + encodeURIComponent(textToAnalyze))
+        .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || "Unable to analyze this text.");
+            }
+            output.textContent =
+                "Dominant emotion: " + data.dominant_emotion +
+                " | Anger: " + data.anger +
+                " | Disgust: " + data.disgust +
+                " | Fear: " + data.fear +
+                " | Joy: " + data.joy +
+                " | Sadness: " + data.sadness;
+        })
+        .catch((error) => {
+            output.textContent = error.message;
+        });
 }
