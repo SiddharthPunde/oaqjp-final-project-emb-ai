@@ -3,7 +3,7 @@ function RunSentimentAnalysis() {
     const output = document.getElementById("system_response");
 
     if (!textToAnalyze) {
-        output.textContent = "Please enter some text to analyze.";
+        output.textContent = "Invalid text! Please try again!";
         return;
     }
 
