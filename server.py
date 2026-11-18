@@ -19,17 +19,21 @@ def emotion_detector_route():
     """Analyze supplied text and return emotion scores as JSON."""
     text_to_analyze = request.args.get("textToAnalyze", "")
     if not text_to_analyze.strip():
-        return jsonify({"error": "Please enter some text to analyze."}), 400
+        return jsonify({"error": "Invalid text! Please try again!"}), 400
 
     try:
         result = emotion_detector(text_to_analyze)
     except requests.RequestException:
-        return jsonify({"error": "The emotion service is currently unavailable."}), 502
+        return jsonify(
+            {"error": "The emotion service is currently unavailable."}
+        ), 502
     except (KeyError, TypeError, ValueError):
-        return jsonify({"error": "Unable to analyze the supplied text."}), 502
+        return jsonify(
+            {"error": "Unable to analyze the supplied text."}
+        ), 502
 
     if result.get("dominant_emotion") is None:
-        return jsonify({"error": "Invalid text. Please try again."}), 400
+        return jsonify({"error": "Invalid text! Please try again!"}), 400
     return jsonify(result)
 
 
