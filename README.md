@@ -1,4 +1,4 @@
-# Emotion Detection Final Project
+# Final project
 
 This repository contains a Python emotion-detection application built with the Watson NLP emotion prediction service and Flask.
 
